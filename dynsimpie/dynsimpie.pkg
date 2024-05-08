@@ -1,5 +1,21 @@
-d 'DEA': Data envelopment analysis
+d 'dynsimpie': A (command) program to examine dynamic compositional dependent variables Use dynsimpie With STATA 18
 d
-f dea.ado
-f dea.sthlp
-f coelli_table6.4.dta
+f cfbplot.ado
+f cfbplot.hlp
+f clarify.sthlp
+f dynsimpie.ado
+f dynsimpie.hlp
+f dynsimpiecoef.ado
+f dynsimpiecoef.hlp
+f effectsplot.ado
+f effectsplot.hlp
+f estsimp.ado
+f estsimp.sthlp
+f setx.ado
+f setx.sthlp
+f simqi.ado
+f simqi.sthlp
+f sumqi.ado
+f sumqi.sthlp
+f tlogit.ado
+f tlogit.sthlp
