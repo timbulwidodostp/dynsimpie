@@ -1,0 +1,357 @@
+{smcl}
+{* *! version 1.0.0 JAN 2020  @ 14:45:24}{...}
+{viewerjumpto "Title" "dynsimpiecoef##title"}{...}
+{viewerjumpto "Syntax" "dynsimpiecoef##syntax"}{...}
+{viewerjumpto "Description" "dynsimpiecoef##description"}{...}
+{viewerjumpto "Options" "dynsimpiecoef##options"}{...}
+{viewerjumpto "Examples" "dynsimpiecoef##examples"}{...}
+{viewerjumpto "Version" "dynsimpiecoef##version"}{...}
+{viewerjumpto "Citations" "dynsimpiecoef##citations"}{...}
+{viewerjumpto "References" "dynsimpiecoef##references"}{...}
+{cmd:help dynsimpiecoef}{right: ({browse "https://doi.org/10.1177/1536867X20953570":SJ20-3: st0448_1})}
+{hline}
+
+{marker title}{...}
+{title:Title}
+
+{p2colset 5 22 24 2}{...}
+{p2col:{cmd:dynsimpiecoef} {hline 2}}Creating coefficient plots from seemingly unrelated regression results estimated in dynsimpie{p_end}
+
+
+{pstd}
+To use {cmd:dynsimpiecoef}, the user must first download and install the
+{cmd:clarify} package by Tomz, Wittenberg, and King (2003) ({helpb estsimp},
+{helpb setx}, and {helpb tlogit}) and the {cmd:coefplot} package by Jann (2014) ({helpb coefplot}).
+
+
+{marker syntax}{...}
+{title:Syntax}
+
+{p 8 21 2}
+{cmd:dynsimpiecoef} 
+{indepvars}
+{ifin}{cmd:,}
+{opth dvs(varlist)} [{it:options}]
+
+{synoptset 25 tabbed}{...}
+{synopthdr}
+{synoptline}
+{p2coldent:* {opth dvs(varlist)}}list of the compositional dependent variables{p_end}
+{synopt:{opt ecm}}specify an error-correction model (ECM); automatically transform
+the dependent and independent variables into lags and first differences for
+estimation in error-correction form; default is lagged dependent variable
+model; not allowed with {cmd:ar()}{p_end}
+{synopt:{opth ar(numlist)}}specify the time lags of the dependent variable to be included in the model; required unless {opt ecm} is specified {p_end}
+{synopt:{opth dummy(varlist)}}list of dummy variables to include in the model{p_end}
+{synopt:{opth interaction(varname)}}dummy variable to be interacted with the
+first variable listed in {it:indepvars}{p_end}
+{synopt:{opt smooth}}confidence intervals for 50 equally spaced levels{p_end}
+{synopt:{opt sigs(numlist)}}numeric list of significance levels for confidence
+intervals; default is {cmd:sigs(95)}; at most, two significance levels may be specified{p_end}
+{synopt:{opt row(#)}}display the combined graph in the specified number
+of rows; default is {cmd:row(1)}{p_end}
+{synopt:{opt xsize(#)}}specify the width of the combined graph in
+inches; default is {cmd:xsize(5)}{p_end}
+{synopt:{opt all}}coefficient plots for all pairs of categories of the dependent variable; produced regardless of the baseline category that users specify{p_end}
+{synopt:{opt vertical}}coefficient plots for each independent variable; produced for all pairwise combinations of categories of the dependent variable{p_end}
+{synopt:{opth angle(angle)}}specify the angle for the labels on the x axis
+in the combined graph; default is {cmd:angle(90)}{p_end}
+{synopt:{opt killtable}}suppress automatic generation of the seemingly
+unrelated regression (SUR) results{p_end}
+{synoptline}
+{p2colreset}{...}
+{p 4 6 2}
+* {cmd:dvs()} is required.
+
+
+{marker description}{...}
+{title:Description}
+
+{pstd}
+{cmd:dynsimpiecoef} is part of the {cmd:dynsimpie} suite of commands.  Users
+can obtain  coefficient plots depicting the equivalent of {cmd:dynsimpie}
+regression results.  {cmd:dynsimpie} was first detailed in Philips, Rutherford,
+and Whitten (2016a) and used in Philips, Rutherford, and Whitten (2015).  By
+default, {cmd:dynsimpiecoef} produces a table of estimates and displays the
+sets of coefficient plots for each log-compositional ratio, as shown in the
+tabular plot presented in the SUR table of estimates.
+
+{pstd}
+To use {cmd:dynsimpiecoef}, the user must first download and install the
+{cmd:clarify} package by Tomz, Wittenberg, and King (2003) ({helpb estsimp},
+{helpb setx}, and {helpb tlogit}) as well as the {cmd:coefplot} package by
+Jann (2014) ({helpb coefplot}).  In addition, each variable listed in 
+{opt dvs(varlist)} must be expressed in compositional form, either as
+proportions (summing to 1) or as percents (summing to 100).
+
+{pstd}
+Options on {cmd:dynsimpiecoef} allow for the addition of dummy variables and
+interactions to the model.  Users may also select an ECM specification, instead
+of the default lagged dependent variable model.
+
+
+{marker options}{...}
+{title:Options}
+
+{phang}
+{opth dvs(varlist)} is a list of the component parts of the compositional
+dependent variable.  Each of these should be expressed either as proportions
+(summing to 1) or as percents (summing to 100).  {cmd:dynsimpiecoef} will
+issue an error message if neither of these criteria is met.
+{cmd:dynsimpiecoef} will take the log of the proportion of each category
+relative to the proportion of an arbitrary "baseline" category; for example,
+if there were J dependent variables in {cmd:dvs(varlist)}, {cmd:dynsimpiecoef}
+would create J-1 categories of s_{tj} = ln(y_{tj}/y_{tJ}), where the first
+category is the baseline.  The reason for this is detailed in Philips,
+Rutherford, and Whitten (2016b).  {cmd:dvs()} is required.
+
+{phang}
+{opt ecm} specifies the choice of an ECM.  It automatically transforms the
+dependent and independent variables into lags and first differences for
+estimation in error-correction form.  The default is a lagged dependent
+variable model; it is not allowed with {opt ar()}.
+
+{phang}
+{opth ar(numlist)}  is a numeric list of dependent variable lags to be
+included in the model.  Up to three values may be inputted following Stata's
+{it:numlist} conventions, and they need not be consecutive.  This option is
+not allowed with {cmd:ecm} but is required in its absence.
+
+{phang}
+{opth dummy(varlist)} is a vector of dummy variables in the model.
+
+{phang}
+{opth interaction(varname)} is a dichotomous variable, not included as a
+control or shock variable elsewhere, to enter a multiplicative interaction.
+In {cmd:dynsimpiecoef}, the variable entered in {cmd:interaction()} is
+interacted with the first variable listed in {it:indepvars}.
+{cmd:interaction()} is optional but, when specified, must be coded 0/1.  This
+option is not allowed with {cmd:ecm}.
+
+{phang}
+{opt smooth} adds confidence intervals for "50 equally spaced levels (1, 3,
+..., 99) with graduated color intensities and varying line widths", as in
+{cmd:coefplot} (Jann 2014, 729).  By default, {cmd:dynsimpiecoef} will
+generate coefficient plots with 95 percent confidence intervals.  {cmd:sigs()}
+must not be specified with {cmd:smooth}.
+
+{phang}
+{opth sigs(numlist)} is a numeric list of the significance levels for the
+percentile confidence intervals.  The default is for 95% confidence intervals.
+At most, two significance levels may be listed in {cmd:sigs()}.
+
+{phang}
+{opt row(#)} specifies the number of rows of the combined graph.  Depending on
+the number of categories of the dependent variable and the number of
+independent variables in the model, a combined graph with multiple rows might
+be desirable.  The default is {cmd:row(1)} if {cmd:vertical} is not specified.
+The default is {cmd:row(3)} with the {cmd:vertical} option.
+
+{phang}
+{opt xsize(#)} specifies the width of the combined graph in inches.  Depending
+on the number of categories of the dependent variable and the number of
+independent variables in the model, it might be desirable to make the combined
+graph wider than usual using this option.  The default is {cmd:xsize(5)}.
+
+{phang}
+{opt all} allows users to compare SUR results for all pairs of dependent
+variable categories.  If specified, {cmd:dynsimpiecoef} automatically produces
+coefficient plots for all possible compositions of dependent variable
+categories, regardless of the baseline category.  Thus, the order of the
+dependent variable categories specified in {opt dvs(varlist)} does not matter
+in {cmd:dynsimpiecoef}.
+
+{phang}
+{opt vertical} specifies that {cmd:dynsimpiecoef} create coefficient plots for
+a particular independent variable across all possible pairwise compositions of
+dependent variable categories.  With this option, {cmd:dynsimpiecoef} produces
+a collection of coefficient plots for each independent variable and saves
+coefficient plots for such variables automatically and separately in the
+working directory.
+
+{phang}
+{opth angle(angle)} specifies the angle for the labels on the x axis in the
+combined graph.  This can only be specified with {cmd:vertical}.  The default
+is {cmd:angle(90)}, meaning that all labels are plotted at a 90-degree angle
+from the x axis.
+
+{phang}
+{opt killtable} suppresses the automatic generation of the SUR results.  By
+default, a table of the estimates is displayed in the Results window.
+
+
+{marker examples}{...}
+{title:Examples}
+
+    {title:UK example}
+{pstd}Open the UK data from Jung et al. (2020){p_end}
+{phang2}{cmd:. use uk_ajps}{p_end}
+
+    {title:Example 1}
+{pstd}
+Show the coefficient plots for a lagged dependent variable model, specifying
+the first two lags of the dependent variable{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ar(1 2) sigs(95 99) xsize(8)}{p_end}
+
+{pstd}
+Show similar coefficient plots when specifying an ECM model with
+{opt ecm}{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm sigs(95 99) xsize(8)}{p_end}
+
+    {title:Example 2}
+{pstd}
+Users can produce confidence intervals using a wide range of confidence
+intervals using {opt smooth}{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm smooth xsize(8)}{p_end}
+
+    {title:Example 3}
+{pstd}
+The coefficient plots for all pairs of categories of the dependent variable
+can be obtained regardless of the baseline category{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm sigs(95 99) xsize(10) all}{p_end}
+
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm smooth xsize(10) all}{p_end}
+
+{pstd}
+Similarly, this can be done when the user specifies a lagged dependent
+variable model, one lag of the dependent variable, and a multiplicative
+interaction between a recession dummy and the first continuous variable listed
+in {it:indepvars}{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ar(1) interaction(recession_dum) smooth xsize(10) all}{p_end}
+
+    {title:Example 4}
+{pstd}
+The coefficient plots for each independent variable can be obtained for all
+pairwise combinations of categories of the dependent variable{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm xsize(8) vertical angle(45)}{p_end}
+
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ecm smooth xsize(8) vertical angle(45)}{p_end}
+
+{pstd}
+Users can also do this within a lagged dependent variable model, including the
+6th and the 12th lags of the dependent variable, and a multiplicative
+interaction{p_end}
+{phang2}{cmd:. dynsimpiecoef all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW all_b_mii_lab_pct, dvs(Con Ldm Lab) ar(6 12) interaction(recession_dum) smooth xsize(8) vertical angle(45)}{p_end}
+
+
+{marker version}{...}
+{title:Version}
+
+{pstd}
+version 1.0, Jan 19, 2020.
+
+
+{marker citations}{...}
+{title:Citations}
+
+{pstd}
+If you use {cmd:dynsimpie}, please cite us:
+
+{phang2}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie. 
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+{pstd}
+and
+
+{phang2}
+Philips, A. Q., A. Rutherford, and G. D. Whitten. 2016.
+dynsimpie: A command to examine dynamic compositional dependent variables.
+{it:Stata Journal} 16: 662-677.
+{browse "https://doi.org/10.1177/1536867X1601600307"}.
+
+{phang2}
+------. 2016.
+Dynamic pie: A strategy for modeling trade-offs in compositional variables
+over time. {it:American Journal of Political Science} 60: 268-283.
+{browse "https://doi.org/10.1111/ajps.12204"}.
+
+
+{marker references}{...}
+{title:References}
+
+{phang}
+Aitchison, J. 1986. {it:The Statistical Analysis of Compositional Data}.  London:
+Chapman & Hall/CRC.
+
+{phang}
+Jann, B. 2014. Plotting regression coefficients and other
+estimates. {it:Stata Journal} 14: 708-737.
+{browse "https://doi.org/10.1177/1536867X1401400402"}.
+
+{phang}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie.
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+{phang}
+Philips, A. Q., A. Rutherford, and G. D. Whitten. 2015. The
+dynamic battle for pieces of pie -- Modeling party support in multi-party
+nations. {it:Electoral Studies} 39: 264-274.
+{browse "https://doi.org/10.1016/j.electstud.2015.03.019"}.
+
+{phang}
+------. 2016a.
+dynsimpie: A command to examine dynamic compositional dependent variables.
+{it:Stata Journal} 16: 662-677.
+{browse "https://doi.org/10.1177/1536867X1601600307"}.
+
+{phang}
+------. 2016b.
+Dynamic pie: A strategy for modeling trade-offs in compositional variables
+over time. {it:American Journal of Political Science} 60: 268-283.
+{browse "https://doi.org/10.1111/ajps.12204"}.
+
+{phang}
+Tomz, M., J. Wittenberg, and G. King. 2003. clarify: Software for
+interpreting and presenting statistical results.
+{it:Journal of Statistical Software} 8(1): 1-30.
+{browse "https://doi.org/10.18637/jss.v008.i01"}.
+
+
+{marker authors}{...}
+{title:Authors}
+
+{pstd}
+Yoo Sun Jung{break}
+School of Global Policy and Strategy{break}
+University of California-San Diego{break}
+San Diego, CA{break}
+yoosunjung@tamu.edu{p_end}
+
+{pstd}
+Fl{c a'}vio D. S. Souza{break}
+Texas A&M University{break}
+College Station, TX{break}
+fsouza@tamu.edu{p_end}
+
+{pstd}
+Andrew Q. Philips{break}
+University of Colorado at Boulder{break}
+Boulder, CO{break}
+andrew.philips@colorado.edu{p_end}
+
+{pstd}
+Amanda Rutherford{break}
+Indiana University{break}
+Bloomington, IN{break}
+aruther@indiana.edu{p_end}
+
+{pstd}
+Guy D. Whitten{break}
+Texas A&M University{break}
+College Station, TX{break}
+g-whitten@tamu.edu{p_end}
+
+
+{marker alsosee}{...}
+{title:Also see}
+
+{p 4 14 2}
+Article:  {it:Stata Journal}, volume 20, number 3: {browse "https://doi.org/10.1177/1536867X20953570":st0448_1},{break}
+          {it:Stata Journal}, volume 16, number 3: {browse "http://www.stata-journal.com/article.html?article=st0448":st0448}{p_end}

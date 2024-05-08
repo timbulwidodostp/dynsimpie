@@ -1,0 +1,213 @@
+{smcl}
+{* *! version 2.0.0 Dec2019}{...}
+{viewerjumpto "Title" "cfbplot##title"}{...}
+{viewerjumpto "Syntax" "cfbplot##syntax"}{...}
+{viewerjumpto "Description" "cfbplot##description"}{...}
+{viewerjumpto "Options" "cfbplot##options"}{...}
+{viewerjumpto "Examples" "cfbplot##examples"}{...}
+{viewerjumpto "Version" "cfbplot##version"}{...}
+{viewerjumpto "Citations" "cfbplot##citations"}{...}
+{viewerjumpto "Reference" "cfbplot##reference"}{...}
+{viewerjumpto "Authors" "cfbplot##authors"}{...}
+{cmd:help cfbplot}{right: ({browse "https://doi.org/10.1177/1536867X20953570":SJ20-3: st0448_1})}
+{hline}
+
+{marker title}{...}
+{title:Title}
+
+{p2colset 5 16 18 2}{...}
+{p2col:{cmd:cfbplot} {hline 2}}A postestimation command to display a
+change-from-baseline plot of the simulated dynsimpie output{p_end}
+
+
+{marker syntax}{...}
+{title:Syntax}
+
+{p 8 15 2}
+{cmdab:cfbplot} 
+
+{p 4 6 2}
+
+{marker description}{...}
+{title:Description}
+
+{pstd}
+{cmd:cfbplot} runs as a postestimation command when using the command
+{cmd:dynsimpie} (Jung et al. 2020) and displays a change-from-baseline plot of
+the simulated output.  The expected proportion of each of the compositional
+dependent variables is plotted against time, along with the associated
+confidence intervals.
+
+{pstd}
+The related options for a change-from-baseline plot through the command
+{cmd:dynsimpie} (Jung et al. 2020) are the following:
+{opt shockvars(varlist)}, {opt shockvals(numlist)}, 
+{opt dummyshockvar(varname)}, {cmd:pv}, {cmd:percentage}, {opt time(#)}, and
+{opt range(#)}.  See the help file of the command {cmd:dynsimpie} (Jung et al.
+2020) for more details.
+
+{pstd}
+{cmd:cfbplot} assumes that you have already run models of dynamic
+compositional dependent variables using the command {cmd:dynsimpie}.
+
+
+{marker examples}{...}
+{title:Examples}
+
+    {title:UK example}
+{pstd}Open the UK data from Jung et al. (2020){p_end}
+{phang2}{cmd:. use uk_ajps}{p_end}
+
+    {title:Example 1}
+{pstd}
+Run models of dynamic compositional dependent variables using the command
+{cmd:dynsimpie}{p_end}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) ar(1 2) time(9) shockvars(all_b_mii_lab_pct) shockvals(0.054)}{p_end}
+
+{pstd}
+Display a change-from-baseline plot of the simulated output to show the
+estimated effects of a 1-standard-deviation increase (+0.054) of those who
+think Labour is the best manager of the most important issue at time t=9,
+while specifying an LDV(2) model{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+    {title:Example 2}
+{pstd}
+Similar to the last example, here we specify the 12th lag of the dependent
+variable, a shock time of 30, and a range of 40{p_end}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) ar(12) time(30) range(40) shockvals(0.054) shockvars(all_b_mii_lab_pct) dummy(recession_dum)}{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+    {title:Example 3}
+{pstd}
+Run models of dynamic compositional dependent variables using the command
+{cmd:dynsimpie}{p_end}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(5) shockvars(all_b_mii_lab_pct)  shockvals(0.054) ecm}{p_end}
+
+{pstd}
+Display a change-from-baseline plot of the simulated output to show the
+estimated effects of a 1-standard-deviation increase (+0.054) of those who
+think Labour is the best manager of the most important issue at time t =
+5{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+    {title:Example 4}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(5) dummyshockvar(brown) shockvars(all_b_mii_lab_pct) shockvals(0.054) ecm}{p_end}
+
+{pstd}
+Display a change-from-baseline plot of the simulated output to show the
+estimated effects of the change from Tony Blair to Gordon Brown as well as a
+1-standard-deviation increase (+0.054) of those who think Labour is the best
+manager of the most important issue at time t = 5{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+    {title:Example 5}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W  all_LDLeaderEval_W all_nat_retW , dvs(Con Ldm Lab) time(30) range(40)  shockvars(all_b_mii_lab_pct) ecm shockvals(0.054) dummy(recession_dum) dummyset(1)}{p_end}
+
+{pstd}
+Display a change-from-baseline plot of the simulated output to show the same
+shock magnitude as above but with a range of 40 months and changing the shock
+to occur at month 30, adding a dummy variable equal to 1 during the months of
+the Great Recession{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+    {title:Example 6}
+{phang2}{cmd:. dynsimpie all_pidW all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(18) range(30) shockvars(all_b_mii_lab_pct all_LabLeaderEval_W) shockvals(0.054 0.367) ecm}{p_end}
+
+{pstd}
+Display a change-from-baseline plot of the simulated output to show the
+estimated effects of a 1-standard-deviation increase (+0.054) of those who
+think Labour is the best manager of the most important issue and a
+1-standard-deviation increase (+0.367) in Labour leader evaluations at month
+18, with a range of 30 months{p_end}
+{phang2}{cmd:. cfbplot}{p_end}
+
+
+{marker version}{...}
+{title:Version}
+
+{pstd}
+version 2.0.5, Jan 16, 2020.
+
+
+{marker citations}{...}
+{title:Citations}
+
+{pstd}
+If you use {cmd:dynsimpie}, please cite us:
+
+{phang2}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to  estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie. 
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+{pstd}
+and
+
+{phang2}
+Philips, A. Q., A. Rutherford, and G. D. Whitten. 2016.
+dynsimpie: A command to examine dynamic compositional dependent variables.
+{it:Stata Journal} 16: 662-677.
+{browse "https://doi.org/10.1177/1536867X1601600307"}.
+
+{phang2}
+------. 2016.
+Dynamic pie: A strategy for modeling trade-offs in compositional variables
+over time. {it:American Journal of Political Science} 60: 268-283.
+{browse "https://doi.org/10.1111/ajps.12204"}.
+
+
+{marker reference}{...}
+{title:Reference}
+
+{phang}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to  estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie.
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+
+{marker authors}{...}
+{title:Authors}
+
+{pstd}
+Yoo Sun Jung{break}
+School of Global Policy and Strategy{break}
+University of California-San Diego{break}
+San Diego, CA{break}
+yoosunjung@tamu.edu{p_end}
+
+{pstd}
+Fl{c a'}vio D. S. Souza{break}
+Texas A&M University{break}
+College Station, TX{break}
+fsouza@tamu.edu{p_end}
+
+{pstd}
+Andrew Q. Philips{break}
+University of Colorado at Boulder{break}
+Boulder, CO{break}
+andrew.philips@colorado.edu{p_end}
+
+{pstd}
+Amanda Rutherford{break}
+Indiana University{break}
+Bloomington, IN{break}
+aruther@indiana.edu{p_end}
+
+{pstd}
+Guy D. Whitten{break}
+Texas A&M University{break}
+College Station, TX{break}
+g-whitten@tamu.edu{p_end}
+
+
+{marker alsosee}{...}
+{title:Also see}
+
+{p 4 14 2}
+Article:  {it:Stata Journal}, volume 20, number 3: {browse "https://doi.org/10.1177/1536867X20953570":st0448_1},{break}
+          {it:Stata Journal}, volume 16, number 3: {browse "http://www.stata-journal.com/article.html?article=st0448":st0448}{p_end}

@@ -1,0 +1,211 @@
+{smcl}
+{* *! version 2.0.0 Dec2019}{...}
+{viewerjumpto "Title" "effectsplot##title"}{...}
+{viewerjumpto "Syntax" "effectsplot##syntax"}{...}
+{viewerjumpto "Description" "effectsplot##description"}{...}
+{viewerjumpto "Examples" "effectsplot##examples"}{...}
+{viewerjumpto "Version" "effectsplot##version"}{...}
+{viewerjumpto "Citations" "effectsplot##citations"}{...}
+{viewerjumpto "Reference" "effectsplot##reference"}{...}
+{viewerjumpto "Authors" "effectsplot##authors"}{...}
+{viewerjumpto "Also see" "effectsplot##alsosee"}{...}
+{cmd:help effectsplot}{right: ({browse "https://doi.org/10.1177/1536867X20953570":SJ20-3: st0448_1})}
+{hline}
+
+{marker title}{...}
+{title:Title}
+
+{p2colset 5 20 22 2}{...}
+{p2col:{cmd:effectsplot} {hline 2}}A postestimation command to display effects plots (prediction plots) from estimated {cmd:dynsimpie} results
+
+
+{marker syntax}{...}
+{title:Syntax}
+
+{p 8 19 2}
+{cmd:effectsplot} 
+
+
+{marker description}{...}
+{title:Description}
+
+{pstd}
+{cmd:effectsplot} is a postestimation command for use after {cmd:dynsimpie}
+(Jung et al. 2020) and displays effects plots (prediction plots) from
+estimated {cmd:dynsimpie} results.  This produces plots that visualize short-
+and long-run effects of each of the compositional dependent variables, along
+with the associated confidence intervals.
+
+{pstd}
+The related options for effects plots (prediction plots) through the command
+{cmd:dynsimpie} (Jung et al. 2020) are the following: 
+{opt shockvars(varlist)}, {opt shockvals(numlist)}, 
+{opt dummyshockvar(varname)}, {cmd:pv}, {cmd:percentage}, and
+{opt sigs(numlist)}.  See the article of the command {cmd:dynsimpie} (Jung et
+al. 2020) for more details.
+
+{pstd}
+{cmd:effectsplot} assumes that you have already run models of dynamic
+compositional dependent variables using the command {cmd:dynsimpie}.
+
+
+{marker examples}{...}
+{title:Examples}
+
+    {title:UK example}
+{pstd}
+Open the UK data from Jung et al. (2020){p_end}
+{phang2}{cmd:. use uk_ajps}{p_end}
+
+    {title:Example 1}
+{pstd}
+Run models of dynamic compositional dependent variables using the command
+{cmd:dynsimpie}.{p_end}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) ar(1 2) time(9) shockvars(all_b_mii_lab_pct) shockvals(0.054)}{p_end}
+
+{pstd}
+Display effects plots (prediction plots) from estimated {cmd:dynsimpie}
+results.  This produces plots that visualize short- and long-run effects of
+each of the compositional dependent variables, along with the associated
+confidence intervals (95% by default).{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+    {title:Example 2}
+{pstd}
+Similar to the last example, here we specify the 12th lag of the dependent
+variable, a shock time of 30, and a range of 40.{p_end}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) ar(12) time(30) range(40) shockvals(0.054) shockvars(all_b_mii_lab_pct) dummy(recession_dum)}{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+    {title:Example 3}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(5) shockvars(all_b_mii_lab_pct) shockvals(0.054) ecm}{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+    {title:Example 4}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(5) shockvars(all_b_mii_lab_pct) shockvals(0.054) ecm sigs(95 99)}{p_end}
+
+{pstd}
+Display effects plots (prediction plots) from estimated {cmd:dynsimpie}
+results, along with two significance levels for confidence intervals (95% and
+99%).{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+
+    {title:Example 5}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(5) ecm dummyshockvar(brown) shockvars(all_b_mii_lab_pct) shockvals(0.054)}{p_end}
+
+{pstd}
+Display effects plots from estimated results to show the estimated effects of
+the change from Tony Blair to Gordon Brown as well as a 1-standard-deviation
+increase (+0.054) of those who think Labour is the best manager of the most
+important issue.{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+    {title:Example 6}
+{phang2}{cmd:. dynsimpie all_pidW all_LabLeaderEval_W all_ConLeaderEval_W  all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(30) range(40) ecm  shockvars(all_b_mii_lab_pct) shockvals(0.054) dummy(recession_dum) dummyset(1)}{p_end}
+
+{pstd}
+Display effects plots from estimated results to show the same shock magnitude
+as above, adding a dummy variable equal to one during the months of the Great
+Recession.{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+    {title:Example 7}
+{phang2}{cmd:. dynsimpie all_pidW all_ConLeaderEval_W all_LDLeaderEval_W all_nat_retW, dvs(Con Ldm Lab) time(18) range(30) shockvars(all_b_mii_lab_pct all_LabLeaderEval_W) shockvals(0.054 0.367) ecm}{p_end}
+
+{pstd}
+Display effects plots from estimated results to show the estimated effects of
+a 1-standard-deviation increase (+0.054) of those who think Labour is the
+best manager of the most important issue and a 1-standard-deviation increase
+(+0.367) in Labour leader evaluations.{p_end}
+{phang2}{cmd:. effectsplot}{p_end}
+
+
+{marker version}{...}
+{title:Version}
+
+{pstd}
+version 2.0, Jan 16, 2020.
+
+
+{marker citations}{...}
+{title:Citations}
+
+{pstd}
+If you use {cmd:dynsimpie}, please cite us:
+
+{phang2}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to  estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie.
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+{pstd}
+and
+
+{phang2}
+Philips, A. Q., A. Rutherford, and G. D. Whitten. 2016.
+dynsimpie: A command to examine dynamic compositional dependent variables.
+{it:Stata Journal} 16: 662-677.
+{browse "https://doi.org/10.1177/1536867X1601600307"}.
+
+{phang2}
+------. 2016.
+Dynamic pie: A strategy for modeling trade-offs in compositional variables
+over time. {it:American Journal of Political Science} 60: 268-283.
+{browse "https://doi.org/10.1111/ajps.12204"}.
+
+
+{marker reference}{...}
+{title:Reference}
+
+{phang}
+Jung, Y. S., F. D. S. Souza, A. Q. Philips, A. Rutherford, and G. D.
+Whitten. 2020. A command to  estimate and interpret models of dynamic
+compositional dependent variables: New features for dynsimpie. 
+{it:Stata Journal} 20: 584-603.
+{browse "https://doi.org/10.1177/1536867X20953570"}.
+
+
+{marker authors}{...}
+{title:Authors}
+
+{pstd}
+Yoo Sun Jung{break}
+School of Global Policy and Strategy{break}
+University of California-San Diego{break}
+San Diego, CA{break}
+yoosunjung@tamu.edu{p_end}
+
+{pstd}
+Fl{c a'}vio D. S. Souza{break}
+Texas A&M University{break}
+College Station, TX{break}
+fsouza@tamu.edu{p_end}
+
+{pstd}
+Andrew Q. Philips{break}
+University of Colorado at Boulder{break}
+Boulder, CO{break}
+andrew.philips@colorado.edu{p_end}
+
+{pstd}
+Amanda Rutherford{break}
+Indiana University{break}
+Bloomington, IN{break}
+aruther@indiana.edu{p_end}
+
+{pstd}
+Guy D. Whitten{break}
+Texas A&M University{break}
+College Station, TX{break}
+g-whitten@tamu.edu{p_end}
+
+
+{marker alsosee}{...}
+{title:Also see}
+
+{p 4 14 2}
+Article:  {it:Stata Journal}, volume 20, number 3: {browse "https://doi.org/10.1177/1536867X20953570":st0448_1},{break}
+          {it:Stata Journal}, volume 16, number 3: {browse "http://www.stata-journal.com/article.html?article=st0448":st0448}{p_end}
