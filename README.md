@@ -1,6 +1,8 @@
 # dynsimpie
 A (command) program to examine dynamic compositional dependent variables Use dynsimpie With STATA 18
 
+https://www.youtube.com/watch?v=H_iuUZq7ZqA
+
 Olah Data Semarang
 
 WA : +6285227746673 (085227746673)
